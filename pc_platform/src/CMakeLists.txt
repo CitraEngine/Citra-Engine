@@ -1,0 +1,15 @@
+file(GLOB CPP_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+
+add_executable(AmiusAdventurePC ${CPP_FILES} ${PROJECT_SOURCE_DIR}/../simdjson/simdjson.cpp)
+
+target_link_libraries(AmiusAdventurePC PRIVATE AmiusAdventure)
+target_link_libraries(AmiusAdventurePC PRIVATE SDL3::SDL3)
+target_link_libraries(AmiusAdventurePC PRIVATE SDL3_mixer::SDL3_mixer)
+target_link_libraries(AmiusAdventurePC PRIVATE SDL3_image::SDL3_image)
+target_link_libraries(AmiusAdventurePC PRIVATE Vulkan::Vulkan)
+target_link_libraries(AmiusAdventurePC PRIVATE glm::glm)
+target_link_libraries(AmiusAdventurePC PRIVATE GPUOpen::VulkanMemoryAllocator)
+if (APPLE)
+    target_link_libraries(AmiusAdventurePC PRIVATE Vulkan::MoltenVK)
+endif()
+target_link_libraries(AmiusAdventurePC PRIVATE fastgltf::fastgltf)
