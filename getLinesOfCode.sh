@@ -1,6 +1,6 @@
 #!/bin/bash
 
-files_that_count=$(find . -type f \( -name "*.cpp" -o -name "*.hpp" -o -name "*.glsl.vert" -o -name "*.glsl.frag" -o -name "*.v.pica" \) \( -not -path "./include/*" -a -not -path "./simdjson/*" -a -not -path "./SDL/*" -a -not -path "./SDL_mixer/*" \))
+files_that_count=$(find . -type f \( -name "*.cpp" -o -name "*.hpp" -o -name "*.glsl.vert" -o -name "*.glsl.frag" -o -name "*.v.pica" \) \( -not -path "./include/*" -a -not -path "./simdjson/*" -a -not -path "./SDL/*" -a -not -path "./SDL_mixer/*" -a -not -path "./SDL_image/*" -a -not -path "./fastgltf/*" \))
 
 lines=0
 
