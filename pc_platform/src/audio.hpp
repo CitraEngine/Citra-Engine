@@ -1,6 +1,6 @@
 #pragma once
 #ifndef PC_PLATFORM_AUDIO
-#include "audio_interface.hpp"
+#include "citra_engine/audio_interface.hpp"
 #include <SDL3_mixer/SDL_mixer.h>
 
 enum AudioFormatMagics {

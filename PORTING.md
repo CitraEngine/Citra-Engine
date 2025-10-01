@@ -1,5 +1,5 @@
 # Porting
-As mentioned in [README.md](README.md), all of the game logic is in [amius_adventure](amius_adventure/), and it can be imported into your port with a few includes and compiler flags. Your port of the game will need to follow specific criteria to accurately represent the game. Keep in mind, these rules are set in place for those who want to make a port that is as faithful to the game as possible, I'm not going to sacrifice you to the 3DS gods if you wanna backport and cannot fulfill every detail
+As mentioned in [README.md](README.md), all of the game logic is in [citra_engine](citra_engine/), and it can be imported into your port with a few includes and compiler flags. Your port of the game will need to follow specific criteria to accurately represent the game. Keep in mind, these rules are set in place for those who want to make a port that is as faithful to the game as possible, I'm not going to sacrifice you to the 3DS gods if you wanna backport and cannot fulfill every detail
 
 ## Required Prerequesites (The game engine requires the hardware to fulfill this to even run)
 - 3d graphics / Psudo 3d graphics capabilities (The game engine will specify 3d model locations and textures it wants, but whether you choose to use 3d models or something like SNES mode 7 is up to you)
@@ -22,7 +22,7 @@ As mentioned in [README.md](README.md), all of the game logic is in [amius_adven
 ## Steps to a Full Port
 1. Make a panic function that takes a string, I recommend this makes the target platform close the app and open a window to report the error. If thats not possible, like how on the 3ds the only thing that is really running at one time is the game itself, you could make the system do something like a bluescreen.
 2. Set up the engine and run `engine.update()` in a loop (see [main.cpp](n3ds_platform/main.cpp))
-3. In the loop, gather input and convert to `AmiusAdventure::Input::InputState` so that the engine can use it
+3. In the loop, gather input and convert to `CitraEngine::Input::InputState` so that the engine can use it
 4. Make your own assets or copy the assets from another port
 5. Write a rendering engine that uses both scenes, call a grapics update every frame after the engine tick
 6. Implement functions to handle sound, i have set up the 3ds to handle sound asyncronously on another thread, hence functions are used to 'talk' to the sound engine, even if the sound engine is going to be on the same thread in your port.

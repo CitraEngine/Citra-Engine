@@ -1,6 +1,6 @@
 #pragma once
 #ifndef N3DS_BACKEND_RENDER
-#include "amius_adventure.hpp"
+#include "citra_engine/citra_engine.hpp"
 #include <3ds.h>
 
 /// @brief Start graphics
@@ -11,7 +11,7 @@ bool initGfx();
 /// @param topScene the scene object for the top screen
 /// @param bottomScene the scene object for the bottom screen
 /// @param iod the interocular distance set by the 3DS's 3D slider
-void gfxUpdate(AmiusAdventure::Scene::Scene* topScene, AmiusAdventure::Scene::Scene* bottomScene, float iod);
+void gfxUpdate(CitraEngine::Scene::Scene* topScene, CitraEngine::Scene::Scene* bottomScene, float iod);
 
 /// @brief Clean up graphics
 void exitGfx();

@@ -3,9 +3,9 @@
 #include <iostream>
 #include "exitfuncs.hpp"
 #include "controllermap.hpp"
-#include "amius_adventure.hpp"
-#include "quikmath.hpp"
-#include "error.hpp"
+#include "citra_engine/citra_engine.hpp"
+#include "citra_engine/quikmath.hpp"
+#include "citra_engine/error.hpp"
 #include "render.hpp"
 #include "assetProvider.hpp"
 #include "audio.hpp"
@@ -58,14 +58,14 @@ int main(int argc, char** argv) {
     
     audioEngine = new AudioEngine();
     
-    AmiusAdventure::Scene::Camera* topCamera = new AmiusAdventure::Scene::Camera(glm::vec3{0, 0, 0}, glm::vec3{0, 0, 0}, 0.01f, 1000.0f, DegreesToRadians(40.0f), aspectRatio, nullptr);
-    AmiusAdventure::Scene::Camera* bottomCamera = new AmiusAdventure::Scene::Camera(glm::vec3{0, 0, 0}, glm::vec3{0, 0, 0}, 0.01f, 1000.0f, DegreesToRadians(40.0f), aspectRatio, nullptr);
+    CitraEngine::Scene::Camera* topCamera = new CitraEngine::Scene::Camera(glm::vec3{0, 0, 0}, glm::vec3{0, 0, 0}, 0.01f, 1000.0f, DegreesToRadians(40.0f), aspectRatio, nullptr);
+    CitraEngine::Scene::Camera* bottomCamera = new CitraEngine::Scene::Camera(glm::vec3{0, 0, 0}, glm::vec3{0, 0, 0}, 0.01f, 1000.0f, DegreesToRadians(40.0f), aspectRatio, nullptr);
     
-    AmiusAdventure::Scene::Scene* topScene = new AmiusAdventure::Scene::Scene(topCamera, audioEngine);
-    AmiusAdventure::Scene::Scene* bottomScene = new AmiusAdventure::Scene::Scene(bottomCamera, audioEngine);
+    CitraEngine::Scene::Scene* topScene = new CitraEngine::Scene::Scene(topCamera, audioEngine);
+    CitraEngine::Scene::Scene* bottomScene = new CitraEngine::Scene::Scene(bottomCamera, audioEngine);
     
     AssetProvider* assetProvider = new AssetProvider();
-    AmiusAdventure::Engine* engine = new AmiusAdventure::Engine("PC", exitWithErrorWindow, topScene, bottomScene, assetProvider);
+    CitraEngine::Engine* engine = new CitraEngine::Engine("PC", exitWithErrorWindow, topScene, bottomScene, assetProvider);
     
     bool running = true;
     bool useSecondScene = false;

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 #include "../src/n3dslink.hpp"
 #include "../src/exitfuncs.hpp"
 #include "testFunction.hpp"

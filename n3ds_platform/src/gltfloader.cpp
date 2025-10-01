@@ -6,7 +6,7 @@
 #include <simdjson.h>
 #include <functional>
 #include "3dtypes.hpp"
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 #include "exitfuncs.hpp"
 
 #define GLTF_MAGIC 0x46546C67

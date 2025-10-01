@@ -3,8 +3,8 @@
 #include <memory>
 #include <fstream>
 #include <cstring>
-#include "error.hpp"
-#include "adventureUtil.hpp"
+#include "citra_engine/error.hpp"
+#include "citra_engine/citra_engine_util.hpp"
 
 // inspiration at taken from https://github.com/EasyRPG/Player
 // Check out src/decoder_opus.cpp

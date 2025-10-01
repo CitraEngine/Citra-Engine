@@ -1,6 +1,6 @@
 #pragma once
 #ifndef N3DS_PLATFORM_AUDIO
-#include "audio_interface.hpp"
+#include "citra_engine/audio_interface.hpp"
 #include <string>
 #include <fstream>
 #include <memory>

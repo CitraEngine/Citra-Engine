@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(AmiusAdventurePC VERSION 0.2.0)
+project(CitraEnginePC VERSION 0.2.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_compile_definitions("DEBUG=$<CONFIG:Debug>")
 
-add_subdirectory(../amius_adventure amius_adventure_engine)
+add_subdirectory(../citra_engine citra_engine_engine)
 
 include_directories(${PROJECT_SOURCE_DIR}/../include ${PROJECT_SOURCE_DIR}/../SDL/include ${PROJECT_SOURCE_DIR}/../SDL_mixer/include ${PROJECT_SOURCE_DIR}/../SDL_image/include ${PROJECT_SOURCE_DIR}/../fastgltf/include)
 

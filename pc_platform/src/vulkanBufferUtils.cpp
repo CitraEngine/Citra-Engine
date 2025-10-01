@@ -1,7 +1,7 @@
 #include "vulkanBufferUtils.hpp"
 #include <map>
 #include <iterator>
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 #include "globalVulkanVars.hpp"
 
 std::map<uint32_t, uint32_t> vertexAllocations = {};

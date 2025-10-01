@@ -3,7 +3,7 @@
 #include <iostream>
 #include "n3dslink.hpp"
 #include "render.hpp"
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 
 u32 oldTimeLimit = UINT32_MAX;
 u32 mainId = UINT32_MAX;

@@ -1,5 +1,5 @@
 #include "graphicsMath.hpp"
-#include "amius_adventure.hpp"
+#include "citra_engine/citra_engine.hpp"
 #include <citro3d.h>
 #include <glm/gtc/type_ptr.hpp>
 #include "logToSDMC.hpp"
@@ -7,7 +7,7 @@
 #include "../src/render.hpp"
 
 bool mat4x4_to_C3D_Mtx_test() {
-    AmiusAdventure::Scene::Object* testObj = new AmiusAdventure::Scene::Object();
+    CitraEngine::Scene::Object* testObj = new CitraEngine::Scene::Object();
     testObj->isDirty = true;
     testObj->position = glm::vec3{5, 2.9, 7};
     testObj->rotation = glm::vec3{1.155, 90 * (180/M_PI), 2};

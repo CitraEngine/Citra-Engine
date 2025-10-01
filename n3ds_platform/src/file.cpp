@@ -1,7 +1,7 @@
 #include "file.hpp"
 #include <fstream>
 #include <vector>
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 
 const void* readFile(std::string path, size_t* fileSize) {
     std::ifstream file(path, std::ios::binary | std::ios::ate);

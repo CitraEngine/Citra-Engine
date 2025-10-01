@@ -31,11 +31,11 @@ include $(DEVKITARM)/3ds_rules
 #     - icon.png
 #     - <libctru folder>/default_icon.png
 #---------------------------------------------------------------------------------
-TARGET			:=	../../amius_adventure_tests
+TARGET			:=	../../citra_engine_tests
 BUILD			:=	build
-SOURCES			:=	../../amius_adventure/src ../src ../../simdjson src
+SOURCES			:=	../../citra_engine/src ../src ../../simdjson src
 DATA			:=	../data
-INCLUDES		:=	../../amius_adventure/include ../../include ../src
+INCLUDES		:=	../../citra_engine/include ../../include ../src
 GRAPHICS		:=	../gfx
 #GFXBUILD		:=	$(BUILD)
 ROMFS			:=	../romfs

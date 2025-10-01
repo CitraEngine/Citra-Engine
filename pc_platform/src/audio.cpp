@@ -3,7 +3,7 @@
 #include <SDL3/SDL_audio.h>
 #include <SDL3_mixer/SDL_mixer.h>
 #include "exitfuncs.hpp"
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 
 AudioEngine::AudioEngine() {
     if (!MIX_Init()) {

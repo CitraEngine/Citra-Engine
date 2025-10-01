@@ -6,7 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include "exitfuncs.hpp"
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 
 // Inspiration taken from https://github.com/EasyRPG/Player
 // Go to their repo and check out src/platform/3ds/audio.cpp for their implementation

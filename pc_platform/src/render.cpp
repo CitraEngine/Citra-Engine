@@ -15,7 +15,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 #include "fileUtil.hpp"
 #include "exitfuncs.hpp"
 #include "renderPrimitives.hpp"
@@ -1551,12 +1551,12 @@ void recordModelRenderInfo(std::string model, std::string texture, glm::mat4x4 m
     }
 }
 
-void recordAll(AmiusAdventure::Scene::Object* object, VkCommandBuffer commandBuffer) {
+void recordAll(CitraEngine::Scene::Object* object, VkCommandBuffer commandBuffer) {
     switch (object->data.type) {
-    case AmiusAdventure::Scene::RENDER_MODEL:
+    case CitraEngine::Scene::RENDER_MODEL:
         recordModelRenderInfo(object->data.model, object->data.texture, object->getTransform(), commandBuffer);
         break;
-    case AmiusAdventure::Scene::RENDER_CUBE:
+    case CitraEngine::Scene::RENDER_CUBE:
         recordCubeRenderInfo(object->data.texture, object->getTransform(), commandBuffer);
         break;
     }
@@ -1566,7 +1566,7 @@ void recordAll(AmiusAdventure::Scene::Object* object, VkCommandBuffer commandBuf
     }
 }
 
-void recordCommandBuffer(AmiusAdventure::Scene::Scene* scene, VkCommandBuffer commandBuffer, uint32_t imageIndex, bool isTopScene, VkPipeline pipeline = defaultPipeline) {
+void recordCommandBuffer(CitraEngine::Scene::Scene* scene, VkCommandBuffer commandBuffer, uint32_t imageIndex, bool isTopScene, VkPipeline pipeline = defaultPipeline) {
     VkCommandBufferBeginInfo beginInfo = {
         .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
         .pNext = nullptr,
@@ -1654,7 +1654,7 @@ void recordCommandBuffer(AmiusAdventure::Scene::Scene* scene, VkCommandBuffer co
     }
 }
 
-void gfxUpdate(AmiusAdventure::Scene::Scene* scene, bool isTopScene) {
+void gfxUpdate(CitraEngine::Scene::Scene* scene, bool isTopScene) {
     vkWaitForFences(device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
     
     uint32_t imageIndex = 0;

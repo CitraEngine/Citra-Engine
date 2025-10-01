@@ -2,8 +2,8 @@
 #include <tremor/ivorbisfile.h>
 #include <tremor/ivorbiscodec.h>
 #include <cstring>
-#include "adventureUtil.hpp"
-#include "error.hpp"
+#include "citra_engine/citra_engine_util.hpp"
+#include "citra_engine/error.hpp"
 
 static size_t vio_read_func(void *ptr, size_t size,size_t nmemb,void* userdata) {
 	auto* f = reinterpret_cast<std::ifstream*>(userdata);

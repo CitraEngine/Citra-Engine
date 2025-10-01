@@ -4,50 +4,50 @@
 #include <fstream>
 #include <sstream>
 #include "simdjson.h"
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 #include "dirUtil.hpp"
 
-std::unordered_map<SDL_Keycode, AmiusAdventure::Input::InputBits> keyMap = std::unordered_map<SDL_Keycode, AmiusAdventure::Input::InputBits> {
-    {SDLK_M, AmiusAdventure::Input::KEY_A},
-    {SDLK_N, AmiusAdventure::Input::KEY_B},
-    {SDLK_BACKSLASH, AmiusAdventure::Input::KEY_SELECT},
-    {SDLK_RETURN, AmiusAdventure::Input::KEY_START},
-    {SDLK_D, AmiusAdventure::Input::KEY_DRIGHT},
-    {SDLK_A, AmiusAdventure::Input::KEY_DLEFT},
-    {SDLK_W, AmiusAdventure::Input::KEY_DUP},
-    {SDLK_S, AmiusAdventure::Input::KEY_DDOWN},
-    {SDLK_RSHIFT, AmiusAdventure::Input::KEY_R},
-    {SDLK_LSHIFT, AmiusAdventure::Input::KEY_L},
-    {SDLK_K, AmiusAdventure::Input::KEY_X},
-    {SDLK_J, AmiusAdventure::Input::KEY_Y}
+std::unordered_map<SDL_Keycode, CitraEngine::Input::InputBits> keyMap = std::unordered_map<SDL_Keycode, CitraEngine::Input::InputBits> {
+    {SDLK_M, CitraEngine::Input::KEY_A},
+    {SDLK_N, CitraEngine::Input::KEY_B},
+    {SDLK_BACKSLASH, CitraEngine::Input::KEY_SELECT},
+    {SDLK_RETURN, CitraEngine::Input::KEY_START},
+    {SDLK_D, CitraEngine::Input::KEY_DRIGHT},
+    {SDLK_A, CitraEngine::Input::KEY_DLEFT},
+    {SDLK_W, CitraEngine::Input::KEY_DUP},
+    {SDLK_S, CitraEngine::Input::KEY_DDOWN},
+    {SDLK_RSHIFT, CitraEngine::Input::KEY_R},
+    {SDLK_LSHIFT, CitraEngine::Input::KEY_L},
+    {SDLK_K, CitraEngine::Input::KEY_X},
+    {SDLK_J, CitraEngine::Input::KEY_Y}
 };
 
 SDL_Keycode flipScreenKey = SDLK_SPACE;
 bool flipScreenQueued = false;
 
-AmiusAdventure::Input::InputState inputState = AmiusAdventure::Input::InputState {
+CitraEngine::Input::InputState inputState = CitraEngine::Input::InputState {
     .kDown = 0,
     .kHeld = 0,
     .kUp = 0
 };
 
-bool inputStrToInputBit(const char* name, AmiusAdventure::Input::InputBits* output) {
-    if (strcmp(name, "A") == 0) { *output = AmiusAdventure::Input::KEY_A; return true; }
-    if (strcmp(name, "B") == 0) { *output = AmiusAdventure::Input::KEY_B; return true; }
-    if (strcmp(name, "SELECT") == 0) { *output = AmiusAdventure::Input::KEY_SELECT; return true; }
-    if (strcmp(name, "START") == 0) { *output = AmiusAdventure::Input::KEY_START; return true; }
-    if (strcmp(name, "DRIGHT") == 0) { *output = AmiusAdventure::Input::KEY_DRIGHT; return true; }
-    if (strcmp(name, "DLEFT") == 0) { *output = AmiusAdventure::Input::KEY_DLEFT; return true; }
-    if (strcmp(name, "DUP") == 0) { *output = AmiusAdventure::Input::KEY_DUP; return true; }
-    if (strcmp(name, "DDOWN") == 0) { *output = AmiusAdventure::Input::KEY_DDOWN; return true; }
-    if (strcmp(name, "R") == 0) { *output = AmiusAdventure::Input::KEY_R; return true; }
-    if (strcmp(name, "L") == 0) { *output = AmiusAdventure::Input::KEY_L; return true; }
-    if (strcmp(name, "X") == 0) { *output = AmiusAdventure::Input::KEY_X; return true; }
-    if (strcmp(name, "Y") == 0) { *output = AmiusAdventure::Input::KEY_Y; return true; }
+bool inputStrToInputBit(const char* name, CitraEngine::Input::InputBits* output) {
+    if (strcmp(name, "A") == 0) { *output = CitraEngine::Input::KEY_A; return true; }
+    if (strcmp(name, "B") == 0) { *output = CitraEngine::Input::KEY_B; return true; }
+    if (strcmp(name, "SELECT") == 0) { *output = CitraEngine::Input::KEY_SELECT; return true; }
+    if (strcmp(name, "START") == 0) { *output = CitraEngine::Input::KEY_START; return true; }
+    if (strcmp(name, "DRIGHT") == 0) { *output = CitraEngine::Input::KEY_DRIGHT; return true; }
+    if (strcmp(name, "DLEFT") == 0) { *output = CitraEngine::Input::KEY_DLEFT; return true; }
+    if (strcmp(name, "DUP") == 0) { *output = CitraEngine::Input::KEY_DUP; return true; }
+    if (strcmp(name, "DDOWN") == 0) { *output = CitraEngine::Input::KEY_DDOWN; return true; }
+    if (strcmp(name, "R") == 0) { *output = CitraEngine::Input::KEY_R; return true; }
+    if (strcmp(name, "L") == 0) { *output = CitraEngine::Input::KEY_L; return true; }
+    if (strcmp(name, "X") == 0) { *output = CitraEngine::Input::KEY_X; return true; }
+    if (strcmp(name, "Y") == 0) { *output = CitraEngine::Input::KEY_Y; return true; }
     return false;
 }
 
-void replaceKeybind(SDL_Keycode key, AmiusAdventure::Input::InputBits inputBit) {
+void replaceKeybind(SDL_Keycode key, CitraEngine::Input::InputBits inputBit) {
     if (key == SDLK_UNKNOWN) {
         setErr("Invalid key for replacement");
         return;
@@ -121,7 +121,7 @@ bool initControllerMap() {
     simdjson::dom::object mapObj = mapObjRes.value_unsafe();
 
     for (const simdjson::dom::key_value_pair pair : mapObj) {
-        AmiusAdventure::Input::InputBits inputBit;
+        CitraEngine::Input::InputBits inputBit;
         if (!inputStrToInputBit(pair.key.data(), &inputBit)) {
             if (strcmp(pair.key.data(), "Flip") == 0) {
                 SDL_Keycode newFlipScreenKey = SDL_GetKeyFromName(pair.value.get_string().value_unsafe().data());
@@ -190,6 +190,6 @@ bool flipScreen() {
     return false;
 }
 
-AmiusAdventure::Input::InputState getInputState() {
+CitraEngine::Input::InputState getInputState() {
     return inputState;
 }

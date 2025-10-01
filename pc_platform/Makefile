@@ -15,7 +15,7 @@ all: $(VERT_SPV) $(FRAG_SPV) $(SHADER_SPV_LINUX)
 	cd build/$(ARCH)/linux && cmake ../../.. && make
 	rm -rf ../target/$(ARCH)/linux || true
 	mkdir -p ../target/$(ARCH)/linux
-	mv build/$(ARCH)/linux/src/AmiusAdventurePC ../target/$(ARCH)/linux/AmiusAdventurePC.$(ARCH)
+	mv build/$(ARCH)/linux/src/CitraEnginePC ../target/$(ARCH)/linux/CitraEnginePC.$(ARCH)
 	mv build/$(ARCH)/linux/data ../target/$(ARCH)/linux
 
 release: $(VERT_SPV) $(FRAG_SPV) $(SHADER_SPV_LINUX)
@@ -24,7 +24,7 @@ release: $(VERT_SPV) $(FRAG_SPV) $(SHADER_SPV_LINUX)
 	cd build/$(ARCH)/linux && cmake -DCMAKE_BUILD_TYPE=Release ../../.. && make
 	rm -rf ../target/$(ARCH)/linux || true
 	mkdir -p ../target/$(ARCH)/linux
-	mv build/$(ARCH)/linux/src/AmiusAdventurePC ../target/$(ARCH)/linux/AmiusAdventurePC.$(ARCH)
+	mv build/$(ARCH)/linux/src/CitraEnginePC ../target/$(ARCH)/linux/CitraEnginePC.$(ARCH)
 	mv build/$(ARCH)/linux/data ../target/$(ARCH)/linux
 
 build/$(ARCH)/linux/data/gfx/shaders/%.spv: build/shaders/%.vert.spv build/shaders/%.frag.spv
@@ -48,7 +48,7 @@ windows:
 	cd build/$(ARCH)/windows && x86_64-w64-mingw32-cmake -DCMAKE_TOOLCHAIN_FILE=../../../../windows-toolchain.cmake ../../.. && make
 	rm -rf ../target/$(ARCH)/windows || true
 	mkdir -p ../target/$(ARCH)/windows
-	mv build/$(ARCH)/windows/src/AmiusAdventurePC.exe ../target/$(ARCH)/windows/AmiusAdventurePC.exe
+	mv build/$(ARCH)/windows/src/CitraEnginePC.exe ../target/$(ARCH)/windows/CitraEnginePC.exe
 	mv build/$(ARCH)/windows/data ../target/$(ARCH)/windows
 
 

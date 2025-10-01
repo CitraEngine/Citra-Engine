@@ -1,13 +1,13 @@
 #include "logToSDMC.hpp"
 #include <filesystem>
 #include <fstream>
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 
 bool present = false;
 std::ofstream output;
 
 bool initSdmcLogger() {
-    return initSdmcLogger("/amius_adventure_logs/log.txt");
+    return initSdmcLogger("/citra_engine_logs/log.txt");
 }
 
 bool initSdmcLogger(std::string strPath) {

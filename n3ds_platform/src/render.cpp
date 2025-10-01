@@ -6,12 +6,12 @@
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 #include "exitfuncs.hpp"
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 #include "file.hpp"
 #include "vshader_shbin.h"
 #include "shapes.hpp"
 #include "gltfloader.hpp"
-#include "quikmath.hpp"
+#include "citra_engine/quikmath.hpp"
 
 #define DISPLAY_TRANSFER_FLAGS \
 	(GX_TRANSFER_FLIP_VERT(0) | GX_TRANSFER_OUT_TILED(0) | GX_TRANSFER_RAW_COPY(0) | \
@@ -274,7 +274,7 @@ bool drawModel(std::string model, std::string texture, C3D_Mtx modelView) {
     return true;
 }
 
-void draw3dSprite(std::string texture, glm::vec3 position, glm::vec3 scale, AmiusAdventure::Scene::SpriteData* spriteData, u32 animationTimer, C3D_Mtx modelView) {
+void draw3dSprite(std::string texture, glm::vec3 position, glm::vec3 scale, CitraEngine::Scene::SpriteData* spriteData, u32 animationTimer, C3D_Mtx modelView) {
     /*if (texture.compare("none") != 0) {
         if(!loadTex(texture)) {
             softPanic(getErr());
@@ -286,7 +286,7 @@ void draw3dSprite(std::string texture, glm::vec3 position, glm::vec3 scale, Amiu
     Mtx_Multiply(&adjustedView, &spriteCameraView, &modelView);*/
 }
 
-void drawText(std::string text, glm::vec3 position, glm::vec2 scale, u32 color, AmiusAdventure::Scene::UI::TextAlign align, float width, bool topScreen) {
+void drawText(std::string text, glm::vec3 position, glm::vec2 scale, u32 color, CitraEngine::Scene::UI::TextAlign align, float width, bool topScreen) {
     C2D_Text c2dText;
     C2D_TextParse(&c2dText, textBuf, text.c_str());
     c2dText.width = width * GSP_SCREEN_WIDTH;
@@ -294,12 +294,12 @@ void drawText(std::string text, glm::vec3 position, glm::vec2 scale, u32 color, 
     C2D_TextBufClear(textBuf);
 }
 
-void renderAll(AmiusAdventure::Scene::Object* parent) {
+void renderAll(CitraEngine::Scene::Object* parent) {
     switch (parent->data.type) {
-    case AmiusAdventure::Scene::RENDER_CUBE:
+    case CitraEngine::Scene::RENDER_CUBE:
         drawCube(parent->data.texture, mat4x4_to_C3D_Mtx(parent->getTransform()));
         break;
-    case AmiusAdventure::Scene::RENDER_MODEL:
+    case CitraEngine::Scene::RENDER_MODEL:
         drawModel(parent->data.model, parent->data.texture, mat4x4_to_C3D_Mtx(parent->getTransform()));
         break;
     default:
@@ -312,7 +312,7 @@ void renderAll(AmiusAdventure::Scene::Object* parent) {
     }
 }
 
-void gfxUpdateScene(AmiusAdventure::Scene::Scene* scene, float iod, bool topScene) {
+void gfxUpdateScene(CitraEngine::Scene::Scene* scene, float iod, bool topScene) {
     /* 3D RENDERING */
     sceneBind();
 
@@ -333,9 +333,9 @@ void gfxUpdateScene(AmiusAdventure::Scene::Scene* scene, float iod, bool topScen
 
     for (size_t i = 0; i < scene->uiObjects.size(); i++) {
         if (scene->uiObjects[i] != nullptr) {
-            AmiusAdventure::Scene::UI::UIObject* object = &(*scene->uiObjects[i]);
+            CitraEngine::Scene::UI::UIObject* object = &(*scene->uiObjects[i]);
             switch (object->data.type) {
-            case AmiusAdventure::Scene::UI::RENDER_TEXT:
+            case CitraEngine::Scene::UI::RENDER_TEXT:
                 drawText(object->data.text, object->position, object->scale, object->data.basecolor, object->data.align, object->data.dimension[0], topScene);
                 break;
             default:
@@ -347,7 +347,7 @@ void gfxUpdateScene(AmiusAdventure::Scene::Scene* scene, float iod, bool topScen
     C2D_Flush();
 }
 
-void gfxUpdate(AmiusAdventure::Scene::Scene* topScene, AmiusAdventure::Scene::Scene* bottomScene, float iod) {
+void gfxUpdate(CitraEngine::Scene::Scene* topScene, CitraEngine::Scene::Scene* bottomScene, float iod) {
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
     {
         C3D_RenderTargetClear(topLeft, C3D_CLEAR_ALL, C3D_CLEAR_COLOR, 0);

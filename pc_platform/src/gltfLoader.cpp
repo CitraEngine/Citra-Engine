@@ -2,7 +2,7 @@
 #include <fastgltf/glm_element_traits.hpp>
 #include <fastgltf/core.hpp>
 #include <filesystem>
-#include "error.hpp"
+#include "citra_engine/error.hpp"
 #include "globalVulkanVars.hpp"
 #include "renderPrimitives.hpp"
 #include "vulkanBufferUtils.hpp"

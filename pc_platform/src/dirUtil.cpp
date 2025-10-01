@@ -3,7 +3,7 @@
 #include <filesystem>
 
 const char* getConfigDir(){
-    const char* configDir = SDL_GetPrefPath("AmiuLittle", "AmiusAdventure");
+    const char* configDir = SDL_GetPrefPath("AmiuLittle", "CitraEngine");
     if (!configDir) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to get config directory: %s", SDL_GetError());
         return nullptr;
