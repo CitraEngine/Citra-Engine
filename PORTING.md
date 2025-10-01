@@ -1,3 +1,5 @@
+# ⚠️ DEPRECATED ⚠️
+
 # Porting
 As mentioned in [README.md](README.md), all of the game logic is in [citra_engine](citra_engine/), and it can be imported into your port with a few includes and compiler flags. Your port of the game will need to follow specific criteria to accurately represent the game. Keep in mind, these rules are set in place for those who want to make a port that is as faithful to the game as possible, I'm not going to sacrifice you to the 3DS gods if you wanna backport and cannot fulfill every detail
 
