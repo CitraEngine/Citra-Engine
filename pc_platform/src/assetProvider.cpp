@@ -5,7 +5,7 @@ AssetProvider::AssetProvider() {}
 
 std::string AssetProvider::getAssetLocation(std::string path, CitraEngine::AssetType type) {
     std::stringstream ss;
-    ss << "./data" << path;
+    ss << "./romfs" << path;
     switch (type) {
         case CitraEngine::TEXTURE_ASSET_TYPE:
             ss << ".png";
