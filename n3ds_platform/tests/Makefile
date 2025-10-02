@@ -33,7 +33,7 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET			:=	../../citra_engine_tests
 BUILD			:=	build
-SOURCES			:=	../../citra_engine/src ../src ../../simdjson src shaders
+SOURCES			:=	../../citra_engine/src ../shaders ../src ../../simdjson src
 DATA			:=	../data
 INCLUDES		:=	../../citra_engine/include ../../include ../src
 GRAPHICS		:=	../gfx

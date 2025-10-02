@@ -33,11 +33,10 @@ include $(DEVKITARM)/3ds_rules
 #---------------------------------------------------------------------------------
 TARGET			:=	../citra_engine
 BUILD			:=	build
-SOURCES			:=	../citra_engine/src src ../simdjson
+SOURCES			:=	../citra_engine/src shaders src ../simdjson
 DATA			:=	data
 INCLUDES		:=	../citra_engine/include ../include
 GRAPHICS		:=	gfx
-#GFXBUILD		:=	$(BUILD)
 ROMFS			:=	romfs
 GFXBUILD		:=	$(ROMFS)/gfx
 APP_TITLE       :=  Amiu's Adventure

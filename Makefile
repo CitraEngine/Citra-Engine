@@ -19,7 +19,6 @@ exe:
 clean:
 	cd n3ds_platform && make clean
 	cd n3ds_platform/tests && make clean
-	cd n3ds_sprite_maker && make clean
 	cd pc_platform && make clean
 	rm -rf build GLCache || true
 
