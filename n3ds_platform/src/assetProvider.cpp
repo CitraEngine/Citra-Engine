@@ -1,6 +1,7 @@
 #include "assetProvider.hpp"
 #include <sstream>
 #include <filesystem>
+#include "citra_engine/error.hpp"
 
 AssetProvider::AssetProvider() {}
 
@@ -25,4 +26,24 @@ std::string AssetProvider::getAssetLocation(std::string path, CitraEngine::Asset
             break;
     }
     return ss.str();
+}
+
+bool AssetProvider::loadMaterialAssets(std::shared_ptr<CitraEngine::Scene::Material> material) {
+    setErr("Not implemented");
+    return false;
+}
+
+bool AssetProvider::loadModelAsset(std::string path) {
+    setErr("Not implemented");
+    return false;
+}
+
+bool AssetProvider::loadMusicAsset(std::string path) {
+    setErr("Not implemented");
+    return false;
+}
+
+bool AssetProvider::loadSFXAsset(std::string path) {
+    setErr("Not implemented");
+    return false;
 }

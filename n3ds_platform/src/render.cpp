@@ -8,7 +8,7 @@
 #include "exitfuncs.hpp"
 #include "citra_engine/error.hpp"
 #include "file.hpp"
-#include "vshader_shbin.h"
+#include "missing_shbin.h"
 #include "shapes.hpp"
 #include "gltfloader.hpp"
 #include "citra_engine/quikmath.hpp"
