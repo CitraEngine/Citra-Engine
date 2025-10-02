@@ -68,9 +68,6 @@ namespace CitraEngine {
     }
 
     namespace Scene {
-        struct Handle;
-        struct SceneCtx;
-
         struct SpriteData {
             glm::vec2 spriteDimension; // The dimension of each individual sprite on the spritesheet
             u32 currentAnimation; // used to specify which row of sprites to use
@@ -257,7 +254,7 @@ namespace CitraEngine {
         };
     }
 
-    /// @brief The game itself
+    /// @brief The engine itself
     class Engine {
     private:
         std::string platform;
