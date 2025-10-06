@@ -35,6 +35,9 @@ namespace CitraEngine {
         struct GameBoundMessage;
         struct RenderBoundMessage;
     }
+    namespace Scripting {
+        struct IScript;
+    }
     class Engine;
 }
 

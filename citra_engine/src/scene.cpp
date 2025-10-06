@@ -5,7 +5,7 @@
 
 using namespace CitraEngine::Scene;
 
-Scene::Scene(Camera* camera, AudioInterface* audio) {
+Scene::Scene(Camera* camera, AudioInterface* audio, AssetProviderInterface* assetProvider) {
     root = Object::Create();
     std::fill(uiObjects.begin(), uiObjects.end(), nullptr);
     this->ctx = SceneCtx {
@@ -15,7 +15,7 @@ Scene::Scene(Camera* camera, AudioInterface* audio) {
         .animationTimer = 0,
         .audio = audio,
         .softPanic = nullptr,
-        .assetProvider = nullptr
+        .assetProvider = assetProvider
     };
 }
 
@@ -38,14 +38,14 @@ void Scene::tick(Input::InputState* inputState) {
     this->ctx.animationTimer += this->ctx.deltaTime.count();
 }
 
-Object::Object() : data(RenderData()), position({0, 0, 0}), rotation({0, 0, 0}), scale({1, 1, 1}), tick(nullptr), isDirty(true) {}
+Object::Object() : data(RenderData()), position({0, 0, 0}), rotation({0, 0, 0}), scale({1, 1, 1}), script(nullptr), isDirty(true) {}
 
 Object::~Object() {
     
 }
 
-Object::Object(RenderData data, glm::vec3 position = glm::vec3{0, 0, 0}, glm::vec3 rotation = glm::vec3{0, 0, 0}, glm::vec3 scale = glm::vec3{1, 1, 1}, void(*tick)(Object*, SceneCtx*, Input::InputState*) = nullptr) : 
-data(data), position{position.x, position.y, position.z}, rotation{rotation.x, rotation.y, rotation.z}, scale{scale.x, scale.y, scale.z}, tick(tick), isDirty(true) {}
+Object::Object(RenderData data, glm::vec3 position = glm::vec3{0, 0, 0}, glm::vec3 rotation = glm::vec3{0, 0, 0}, glm::vec3 scale = glm::vec3{1, 1, 1}, Scripting::IScript* script = nullptr) : 
+data(data), position{position.x, position.y, position.z}, rotation{rotation.x, rotation.y, rotation.z}, scale{scale.x, scale.y, scale.z}, script(script), isDirty(true) {}
 
 void Object::setPosition(glm::vec3 position) {
     this->position.x = position.x;
@@ -96,8 +96,8 @@ std::shared_ptr<Object> Object::Create() {
     return output;
 }
 
-std::shared_ptr<Object> Object::Create(RenderData data, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale, void(*tick)(Object*, SceneCtx*, Input::InputState*)) {
-    auto output = std::make_shared<Object>(data, pos, rot, scale, tick);
+std::shared_ptr<Object> Object::Create(RenderData data, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale, Scripting::IScript* script = nullptr) {
+    auto output = std::make_shared<Object>(data, pos, rot, scale, script);
     output->self = output;
     return output;
 }
@@ -130,8 +130,8 @@ void Object::markDirty() {
 }
 
 void Object::tickAll(SceneCtx* ctx, CitraEngine::Input::InputState* inputState) {
-    if (this->tick != nullptr) {
-        this->tick(&(*this), ctx, inputState);
+    if (this->script != nullptr) {
+        this->script->OnTick(this, ctx, inputState);
     }
     for (int i = 0; i < this->children.size(); i++) {
         if (this->children[i] != nullptr) {
@@ -139,28 +139,13 @@ void Object::tickAll(SceneCtx* ctx, CitraEngine::Input::InputState* inputState) 
         }
     }
 }
- 
-UI::UIObject::UIObject() : data(UI::UIRenderData {
-    .type = UI::RENDER_TEXT,
-    .text = "Sample Text",
-    .dimension = {1, 0},
-    .basecolor = 0xFFFFFFFF,
-    .align = UI::ALIGN_LEFT
-}), position({0, 0, 0}), rotation(0), scale({1, 1}), flip_horizontal(false), flip_vertical(false), handle(nullptr), tick(nullptr) {}
 
-UI::UIObject::~UIObject() {
-    if (this->handle != nullptr) this->handle->valid = false;
+std::weak_ptr<Material> Scene::registerMaterial(Material mat) {
+    this->materials.push_back(std::make_shared<Material>(mat));
+    return this->materials.back();
 }
 
-UI::UIObject::UIObject(UIRenderData data, glm::vec3 position = glm::vec3{0, 0, 0}, float_t rotation = 0, glm::vec2 scale = glm::vec2{1, 1}, bool flip_vertical = false, bool flip_horizontal = false, void (*tick)(UIObject*, SceneCtx*, Input::InputState*) = nullptr) : 
-data(data), position{position.x, position.y, position.z}, rotation(rotation), scale{scale.x, scale.y}, flip_vertical(flip_vertical), flip_horizontal(flip_horizontal), tick(tick) {}
-
-UI::UIHandle* UI::UIObject::getHandle() {
-    if (handle == nullptr) {
-        handle = new UI::UIHandle {
-            .valid = true,
-            .data = &(*this)
-        };
-    }
-    return handle;
+std::weak_ptr<std::string> Scene::registerModel(std::string path) {
+    this->models.push_back(std::make_shared<std::string>(path));
+    return this->models.back();
 }

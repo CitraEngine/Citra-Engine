@@ -9,6 +9,7 @@
 #include "citra_engine_types.hpp"
 #include "audio_interface.hpp"
 #include "asset_provider_interface.hpp"
+#include "scripting.hpp"
 
 typedef uint32_t u32;
 
@@ -68,64 +69,20 @@ namespace CitraEngine {
     }
 
     namespace Scene {
-        struct SpriteData {
-            glm::vec2 spriteDimension; // The dimension of each individual sprite on the spritesheet
-            u32 currentAnimation; // used to specify which row of sprites to use
-            u32 animationStart; // The value of the animation timer when the animation started
-            u32 animationTime; // how many frames are in an animation if time > perRow then the next row will be used in the animation
-            u32 animationStep; // how much time should pass between frames in ms
-            u32 framesPerRow; // how many frames inhabit one row
+
+        enum TextAlign {
+            ALIGN_LEFT = 0,
+            ALIGN_RIGHT = 4,
+            ALIGN_CENTER = 8
         };
-
-        namespace UI {
-            struct UIHandle;
-
-            enum UIRenderType {
-                RENDER_TEXT
-            };
-
-            enum TextAlign {
-                ALIGN_LEFT = 0,
-                ALIGN_RIGHT = 4,
-                ALIGN_CENTER = 8
-            };
-
-            struct UIRenderData {
-                UIRenderType type;
-                std::string text;
-                glm::vec2 dimension;
-                u32 basecolor;
-                TextAlign align;
-            };
-
-            class UIObject {
-            private:
-                UIHandle* handle = nullptr;
-            public:
-                UIRenderData data;
-                glm::vec3 position; // z position is used for stereoscopic 3d on the 3DS
-                float_t rotation;
-                glm::vec2 scale;
-                bool flip_vertical;
-                bool flip_horizontal;
-                void (*tick)(UIObject*, SceneCtx*, Input::InputState*);
-                UIObject();
-                UIObject(UIRenderData, glm::vec3, float_t, glm::vec2, bool, bool, void (*tick)(UIObject*, SceneCtx*, Input::InputState*));
-                ~UIObject();
-                UIHandle* getHandle();
-            };
-
-            struct UIHandle {
-                bool valid;
-                UIObject* data;
-            };
-        }
 
         enum RenderType {
             RENDER_PLANE,
             RENDER_CUBE,
             RENDER_MODEL,
-            RENDER_EMPTY
+            RENDER_EMPTY,
+            RENDER_TEXT,
+            RENDER_CANVAS
         };
 
         enum ShaderInputType {
@@ -151,14 +108,12 @@ namespace CitraEngine {
         public:
             RenderType type;
             std::shared_ptr<std::string> model;
-            std::shared_ptr<Material> material; // if null then a default material will be used
+            std::vector<std::shared_ptr<Material>> materials;
 
             RenderData();
             RenderData Plane(std::weak_ptr<Material> material);
             RenderData Cube(std::weak_ptr<Material> material);
-            RenderData Model(std::shared_ptr<std::string> model, std::weak_ptr<Material> material);
-
-            void changeMaterial(std::weak_ptr<Material> material);
+            RenderData Model(std::weak_ptr<std::string> model, std::weak_ptr<Material> material);
         };
 
         class Object {
@@ -167,18 +122,18 @@ namespace CitraEngine {
             bool isDirty;
         public:
             Object();
-            Object(RenderData, glm::vec3, glm::vec3, glm::vec3, void(*tick)(Object*, SceneCtx*, Input::InputState*));
+            Object(RenderData, glm::vec3, glm::vec3, glm::vec3, Scripting::IScript* script = nullptr);
             std::weak_ptr<Object> self;
             RenderData data;
             glm::vec3 position;
             glm::vec3 rotation;
             glm::vec3 scale;
-            void (*tick)(Object*, SceneCtx*, Input::InputState*);
+            Scripting::IScript* script = nullptr;
             std::weak_ptr<Object> parent;
             std::vector<std::shared_ptr<Object>> children = {};
 
             static std::shared_ptr<Object> Create();
-            static std::shared_ptr<Object> Create(RenderData, glm::vec3, glm::vec3, glm::vec3, void(*tick)(Object*, SceneCtx*, Input::InputState*));
+            static std::shared_ptr<Object> Create(RenderData, glm::vec3, glm::vec3, glm::vec3, Scripting::IScript* script = nullptr);
 
             ~Object();
             void setPosition(glm::vec3);
@@ -227,11 +182,14 @@ namespace CitraEngine {
             std::vector<std::shared_ptr<Material>> materials;
             std::vector<std::shared_ptr<std::string>> models;
             SceneCtx ctx;
-            Scene(Camera*, AudioInterface*);
+            Engine* engine = nullptr;
+            Scene(Camera*, AudioInterface*, AssetProviderInterface*);
             ~Scene();
             void tick(Input::InputState*);
-            std::weak_ptr<Material> registerMaterial();
-            std::weak_ptr<std::string> registerModel();
+            std::weak_ptr<Material> registerMaterial(Material mat);
+            std::weak_ptr<std::string> registerModel(std::string path);
+
+            bool fromJson(std::string path, Scene* output);
         };
     }
 
@@ -260,15 +218,22 @@ namespace CitraEngine {
         std::string platform;
         void(*softPanic)(std::string);
         AssetProviderInterface* assetProvider;
+        std::vector<std::string, Scripting::IScript> scripts;
+        Scene::Scene* scene = nullptr;
+
+        void attachScene(Scene::Scene* scene);
+        void detachScene();
     public:
         /// @brief Runs init 
         /// @param platform a string representing the platform the game is running on
         /// @param softPanic this will be called if the program cannot continue but can safely exit without causing a full panic
-        Engine(std::string platform, void(*softPanic)(std::string), Scene::Scene* topScene, Scene::Scene* bottomScene, AssetProviderInterface* assetProvider);
+        Engine(std::string platform, void(*softPanic)(std::string), Scene::Scene* scene, AssetProviderInterface* assetProvider);
         /// @brief one tick of app logic, should be called on a loop, returns true if app should exit
         /// @param inputState the current input state of the system
         /// @return bool
-        bool update(Input::InputState, Scene::Scene* topScene, Scene::Scene* bottomScene);
+        bool update(Input::InputState);
+        /// @brief Register a script
+        void registerScript(std::string name, Scripting::IScript script);
     };
 }
 

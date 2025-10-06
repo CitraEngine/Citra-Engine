@@ -6,6 +6,7 @@
 
 namespace CitraEngine {
     enum AssetType {
+        SCRIPT_ASSET_TYPE,
         TEXTURE_ASSET_TYPE,
         MODEL_ASSET_TYPE,
         SHADER_ASSET_TYPE,
@@ -21,6 +22,9 @@ namespace CitraEngine {
         virtual bool loadModelAsset(std::string path) = 0;
         virtual bool loadMusicAsset(std::string path) = 0;
         virtual bool loadSFXAsset(std::string path) = 0;
+
+        virtual char* readFileToBuffer(std::string path, size_t* size) = 0;
+        virtual void freeBuffer(void* ptr) = 0;
     };
 }
 

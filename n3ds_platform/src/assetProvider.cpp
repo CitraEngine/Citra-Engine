@@ -1,6 +1,8 @@
 #include "assetProvider.hpp"
 #include <sstream>
 #include <filesystem>
+#include <fstream>
+#include <3ds.h>
 #include "citra_engine/error.hpp"
 
 AssetProvider::AssetProvider() {}
@@ -46,4 +48,29 @@ bool AssetProvider::loadMusicAsset(std::string path) {
 bool AssetProvider::loadSFXAsset(std::string path) {
     setErr("Not implemented");
     return false;
+}
+
+char* AssetProvider::readFileToBuffer(std::string path, size_t* size) {
+    std::ifstream file(path, std::ios::binary | std::ios::ate);
+    if (!file.is_open()) {
+        setErr("AssetProvider::readFileToPointer: File does not exist at: " + path);
+        return nullptr;
+    }
+
+    *size = static_cast<size_t>(file.tellg());
+    file.seekg(0, std::ios::beg);
+
+    char* buffer = (char*)linearAlloc(*size);
+    file.read(buffer, *size);
+    if (file.fail()) {
+        setErr("AssetProvider::readFileToPointer: Error reading file at: " + path);
+        linearFree(buffer);
+        return nullptr;
+    }
+
+    return buffer;
+}
+
+void AssetProvider::freeBuffer(void* ptr) {
+    linearFree(ptr);
 }

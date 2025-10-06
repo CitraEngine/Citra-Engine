@@ -2,22 +2,29 @@
 
 using namespace CitraEngine;
 
-Engine::Engine(std::string platform, void(*softPanic)(std::string), Scene::Scene* topScene, Scene::Scene* bottomScene, AssetProviderInterface* assetProvider): platform(platform), softPanic(softPanic), assetProvider(assetProvider) {
-    topScene->ctx.softPanic = softPanic;
-    bottomScene->ctx.softPanic = softPanic;
-    topScene->ctx.assetProvider = assetProvider;
-    bottomScene->ctx.assetProvider = assetProvider;
+Engine::Engine(std::string platform, void(*softPanic)(std::string), Scene::Scene* scene, AssetProviderInterface* assetProvider): platform(platform), softPanic(softPanic), assetProvider(assetProvider) {
+    attachScene(scene);
 }
 
-bool Engine::update(Input::InputState inputState, Scene::Scene* topScene, Scene::Scene* bottomScene) { // returns true if app should end
+void Engine::attachScene(Scene::Scene* scene) {
+    scene->ctx.softPanic = softPanic;
+    scene->ctx.assetProvider = assetProvider;
+    scene->engine = &*this;
+    this->scene = scene;
+}
+
+void Engine::detachScene() {
+    delete scene;
+}
+
+bool Engine::update(Input::InputState inputState) { // returns true if app should end
     if (inputState.kDown & Input::KEY_START) {
         return true;
     }
     if (inputState.kDown & Input::KEY_SELECT) {
         softPanic("User initiated test");
     }
-    topScene->tick(&inputState);
-    bottomScene->tick(&inputState);
+    scene->tick(&inputState);
 
     return false;
 }
