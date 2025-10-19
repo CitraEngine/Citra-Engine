@@ -1,0 +1,7 @@
+[package]
+name = "pc_target"
+version.workspace = true
+edition = "2024"
+
+[dependencies]
+citra_engine.workspace = true

@@ -1,0 +1,11 @@
+[package]
+name = "n3ds_target"
+version.workspace = true
+edition = "2024"
+
+[dependencies]
+ctru-rs = { git = "https://github.com/rust3ds/ctru-rs" }
+citra_engine.workspace = true
+
+[package.metadata.cargo-3ds]
+romfs_dir = "romfs"
