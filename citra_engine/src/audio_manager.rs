@@ -18,15 +18,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use std::time::Duration;
 
+use crate::error::CitraError;
+
 pub trait AudioManager {
     /* Cache:
         - Preload audio into a decode ready state
         - bgm_play and sfx_play will automatically cache if not already cached
         - It is recommended to cache bgm tracks during scene loading
     */
-    fn cache(&self, path: String);
-    fn uncache(&self, path: String);
-    fn uncache_all(&self);
+    fn cache(&mut self, path: String);
+    fn uncache(&mut self, path: String);
+    fn uncache_all(&mut self);
 
     /* BGM:
         - Only one audio file at a time
@@ -34,12 +36,17 @@ pub trait AudioManager {
         - fading
         - Reccommended format: Ogg Vorbis ( 2Chn 32bps 48kHz )
     */
-    fn bgm_play(&self, fade_in_time: Duration, target_volume: u8, path: String);
-    fn bgm_pause(&self, fade_out_time: Duration);
-    fn bgm_resume(&self, fade_in_time: Duration);
-    fn bgm_stop(&self, fade_out_time: Duration);
-    fn bgm_set_volume(&self, volume: u8, fade_time: Duration);
-    fn bgm_set_time(&self, time: Duration);
+    fn bgm_play(
+        &mut self,
+        fade_in_time: Duration,
+        target_volume: f32,
+        path: String,
+    ) -> Result<(), CitraError>;
+    fn bgm_pause(&mut self, fade_out_time: Duration);
+    fn bgm_resume(&mut self, fade_in_time: Duration);
+    fn bgm_stop(&mut self, fade_out_time: Duration);
+    fn bgm_set_volume(&mut self, volume: f32, fade_time: Duration);
+    fn bgm_set_time(&mut self, time: Duration);
     fn bgm_playing(&self) -> bool;
 
     /* SFX:
@@ -49,8 +56,8 @@ pub trait AudioManager {
         - Reccommended format: WAV or raw PCM (2Chn 32bps 48kHz)
     */
     // if sfx buffer is full, the oldest sound effect is stopped to make room
-    fn se_play(&self, volume: u8, path: String);
-    fn se_stop_all(&self);
+    fn se_play(&mut self, volume: u8, path: String);
+    fn se_stop_all(&mut self);
     fn se_num_playing(&self) -> usize;
 
     /* LOADING SCREEN:
@@ -59,29 +66,7 @@ pub trait AudioManager {
         - On the 3DS this will stop all sound processing
             - For non 3DS platforms you can either stop sound for accuracy or add your own loading screen music
     */
-    fn ls_start(&self);
+    fn ls_start(&mut self);
     // ls_stop should not return until the audio thread is ready to recieve commands again
-    fn ls_stop(&self);
-}
-
-pub struct PlaceholderAudioManager {}
-impl AudioManager for PlaceholderAudioManager {
-    fn cache(&self, _: String) {}
-    fn uncache(&self, _: String) {}
-    fn uncache_all(&self) {}
-
-    fn bgm_play(&self, _: Duration, _: u8, _: String) {}
-    fn bgm_pause(&self, _: Duration) {}
-    fn bgm_resume(&self, _: Duration) {}
-    fn bgm_stop(&self, _: Duration) {}
-    fn bgm_set_volume(&self, _: u8, _: Duration) {}
-    fn bgm_set_time(&self, _: Duration) {}
-    fn bgm_playing(&self) -> bool {false}
-
-    fn se_play(&self, _: u8, _: String) {}
-    fn se_stop_all(&self) {}
-    fn se_num_playing(&self) -> usize {0}
-
-    fn ls_start(&self) {}
-    fn ls_stop(&self) {}
+    fn ls_stop(&mut self);
 }

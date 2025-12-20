@@ -2,10 +2,45 @@
 name = "n3ds_target"
 version.workspace = true
 edition = "2024"
+license = "MIT"
+license_file = "LICENSE"
+description.workspace = true
+authors.workspace = true
+
+[lib]
+name = "n3ds_target"
+path = "src/lib.rs"
+
+[[bin]]
+name = "n3ds_citra_engine"
+path = "src/main.rs"
+test = false
 
 [dependencies]
-ctru-rs = { git = "https://github.com/rust3ds/ctru-rs" }
+ctru-rs = { git = "https://github.com/rust3ds/ctru-rs", features = ["romfs"] }
 citra_engine.workspace = true
+citro3d-sys = { git = "https://github.com/rust3ds/citro3d-rs.git", version = "0.1.0" }
+ctru-sys = { git = "https://github.com/rust3ds/ctru-rs", version = "0.5.0" }
+citro3d-macros = { git = "https://github.com/rust3ds/citro3d-rs.git", version = "0.1.0" }
+citro2d-sys.workspace = true
+glam = "0.30.8"
+citro3d = { git = "https://github.com/rust3ds/citro3d-rs.git", version = "0.1.0" }
+lazy_static = "1.5.0"
+scripts.workspace = true
+simd-json = "0.17.0"
+gltf-json = "1.4.1"
+n3ds_libvorbisidec-sys.workspace = true
+symphonia = { version = "0.5.5", default-features = false, features = ["pcm", "ogg", "symphonia-codec-pcm", "symphonia-codec-vorbis", "symphonia-format-ogg", "vorbis", "wav"] }
+
+[features]
+fast-math = ["citra_engine/fast-math"]
+enable-speedup = ["citra_engine/enable-speedup"]
+new-n3ds-only = ["citra_engine/new-n3ds-only"]
+
+[dev-dependencies]
+assert_float_eq = "1.2.0"
 
 [package.metadata.cargo-3ds]
-romfs_dir = "romfs"
+icon = "../icon.png"
+region = "WORLD"
+romfs_dir = "../target/armv6k-nintendo-3ds/full_romfs"

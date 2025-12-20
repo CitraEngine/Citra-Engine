@@ -1,0 +1,18 @@
+[package]
+name = "n3ds_libvorbisidec-sys"
+edition = "2024"
+version = "0.1.0"
+links = "3ds-libvorbisidec"
+
+[dependencies]
+libc = "0.2.175"
+n3ds_ogg-sys.workspace = true
+
+
+[build-dependencies]
+bindgen = { version = "0.72", features = ["experimental"] }
+cc = "1.0"
+doxygen-rs = "0.4.2"
+
+[dev-dependencies]
+shim-3ds = { git = "https://github.com/rust3ds/shim-3ds.git" }

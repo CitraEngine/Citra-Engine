@@ -3,5 +3,20 @@ name = "pc_target"
 version.workspace = true
 edition = "2024"
 
+[lib]
+name = "pc_target"
+path = "src/lib.rs"
+
+[[bin]]
+name = "pc_citra_engine"
+path = "src/main.rs"
+
 [dependencies]
 citra_engine.workspace = true
+wgpu = "27.0.1"
+winit = "0.30.12"
+
+[features]
+fast-math = ["citra_engine/fast-math"]
+enable-speedup = ["citra_engine/enable-speedup"]
+new-n3ds-only = ["citra_engine/new-n3ds-only"]

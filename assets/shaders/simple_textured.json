@@ -1,0 +1,21 @@
+{
+  "version": "1",
+  "vertex_path": "/shaders/simple_textured.v",
+  "geo_path": null,
+  "inputs": ["Texture2D"],
+  "env_cfg": [
+    {
+      "src_mode": "Both",
+      "source0": "Texture0",
+      "source1": "FragmentPrimaryColor",
+      "source2": "FragmentSecondaryColor",
+      "func_mode": "Both",
+      "func": "Add"
+    },
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}

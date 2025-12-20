@@ -1,0 +1,19 @@
+[package]
+name = "citro2d-sys"
+edition = "2024"
+version = "0.1.0"
+links = "citro2d"
+
+[dependencies]
+libc = "0.2.175"
+ctru-sys = { git = "https://github.com/rust3ds/ctru-rs.git" }
+citro3d-sys = { git = "https://github.com/rust3ds/citro3d-rs.git", version = "0.1.0" }
+
+
+[build-dependencies]
+bindgen = { version = "0.72", features = ["experimental"] }
+cc = "1.0"
+doxygen-rs = "0.4.2"
+
+[dev-dependencies]
+shim-3ds = { git = "https://github.com/rust3ds/shim-3ds.git" }

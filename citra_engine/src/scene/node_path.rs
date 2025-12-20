@@ -24,12 +24,12 @@ use crate::util::visitors::StringVisitor;
 
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct NodePath {
-    pub path: Vec<String>
+    pub path: Vec<String>,
 }
 impl From<String> for NodePath {
     fn from(value: String) -> Self {
         let mut out = Self {
-            path: value.split('/').map(|s| s.to_string()).collect()
+            path: value.split('/').map(|s| s.to_string()).collect(),
         };
         if out.path[0].is_empty() {
             out.path.remove(0);
@@ -47,6 +47,18 @@ impl fmt::Display for NodePath {
     }
 }
 impl NodePath {
+    pub fn new() -> Self {
+        NodePath { path: vec![] }
+    }
+    pub fn push<T>(&mut self, next: T)
+    where
+        T: ToString,
+    {
+        self.path.push(next.to_string());
+    }
+    pub fn extend(&mut self, other: &NodePath) {
+        self.path.extend_from_slice(&other.path);
+    }
     pub fn remove_first(&self) -> Self {
         let mut out = self.clone();
         out.path.remove(0);
@@ -55,16 +67,20 @@ impl NodePath {
 }
 impl Serialize for NodePath {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where
-            S: serde::Serializer {
+    where
+        S: serde::Serializer,
+    {
         serializer.serialize_str(&self.to_string()[..])
     }
 }
-impl <'de> Deserialize<'de> for NodePath {
+impl<'de> Deserialize<'de> for NodePath {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where
-            D: serde::Deserializer<'de> {
-        Ok(Self::from(deserializer.deserialize_string(StringVisitor {})?))
+    where
+        D: serde::Deserializer<'de>,
+    {
+        Ok(Self::from(
+            deserializer.deserialize_string(StringVisitor {})?,
+        ))
     }
 }
 
@@ -73,7 +89,9 @@ fn node_path_conversion() {
     let string = "/path/to/thing".to_string();
     let vector = vec!["path".to_string(), "to".to_string(), "thing".to_string()];
     let strtest = NodePath::from(string.clone());
-    let vectest = NodePath { path: vector.clone() };
+    let vectest = NodePath {
+        path: vector.clone(),
+    };
     assert_eq!(strtest.path, vector.clone());
     assert_eq!(vectest.to_string(), string.clone());
 }

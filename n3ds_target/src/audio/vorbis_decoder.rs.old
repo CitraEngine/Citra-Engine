@@ -1,0 +1,109 @@
+use std::{
+    fs::File,
+    io::{BufReader, Read, Seek, SeekFrom},
+};
+
+use citra_engine::error::CitraError;
+use symphonia::core::codecs::{CodecDescriptor, CodecRegistry};
+
+use crate::audio::{AudioDecoder, AudioFomatting, AudioFormat, BUF_SIZE, DecodeInfo};
+
+const OGG_MAGIC: u32 = 0x4F_67_67_53; // OggS in ascii
+
+pub struct VorbisDecoder {
+    decode_info: DecodeInfo,
+
+    codec_descriptor: CodecDescriptor,
+    formatting: Option<AudioFomatting>,
+
+    looping: bool,
+    to_end: bool,
+    start: i64,
+    end: i64,
+}
+impl VorbisDecoder {
+    pub fn new() -> Result<Self, CitraError> {
+        Ok(Self {
+            decode_info: DecodeInfo::default(),
+
+            codec_registry
+            formatting: None,
+
+            looping: false,
+            to_end: false,
+            start: 0,
+            end: 0,
+        })
+    }
+}
+impl AudioDecoder for VorbisDecoder {
+    fn reset(&mut self) {
+        self.decode_info = DecodeInfo::default();
+
+        self.formatting = None;
+
+        self.looping = false;
+        self.to_end = false;
+        self.start = 0;
+        self.end = 0;
+    }
+
+    fn can_decode(&self, file: &mut BufReader<File>) -> bool {
+        let mut buf = [0; 4];
+        if file.read_exact(&mut buf).is_err() {
+            return false;
+        }
+        let magic = u32::from_be_bytes(buf);
+        if magic != OGG_MAGIC {
+            return false;
+        }
+        if file.seek(SeekFrom::Current(25)).is_err() {
+            return false;
+        }
+        let mut buf = [0; 6];
+        if file.read_exact(&mut buf).is_err() {
+            return false;
+        }
+        let magic = String::from_utf8_lossy(&buf);
+        magic == "vorbis"
+    }
+    fn open(&mut self, file: BufReader<File>) -> Result<(), citra_engine::error::CitraError> {
+        self.decode_info.finished = false;
+
+        if !self.looping {
+            self.start = 0;
+            self.end = -1;
+        }
+
+        Ok(())
+    }
+    fn get_audio_formatting(&self) -> Result<AudioFomatting, CitraError> {
+        self.formatting
+            .ok_or(CitraError::PlatformError("No vorbis file open".to_owned()))
+    }
+
+    fn get_decode_info(&mut self) -> &mut DecodeInfo {
+        &mut self.decode_info
+    }
+    fn check_file_buffer(&mut self) -> Result<(), CitraError> {
+        Ok(())
+    }
+
+    fn fill_buffer(
+        &mut self,
+        buffer: *mut u8,
+        size: i32,
+    ) -> Result<i32, citra_engine::error::CitraError> {
+        Ok(size)
+    }
+    fn is_finished(&self) -> bool {
+        false
+    }
+    fn seek(&mut self, seek: std::io::SeekFrom) -> Result<(), citra_engine::error::CitraError> {
+        if let SeekFrom::Start(0) = seek {
+            Ok(())
+        } else {
+            todo!("Working on seeking anywhere");
+        }
+    }
+}

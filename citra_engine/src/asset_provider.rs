@@ -16,42 +16,31 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use crate::{error::CitraError, scene::material::Material};
+use std::{cell::RefCell, rc::Rc};
 
-pub enum Asset {
-    Script(String),
-    Texture(String),
-    Model(String),
-    Shader(String),
-    Music(String),
-    SFX(String),
-    Scene(String)
+use serde::{Deserialize, Serialize};
+
+use crate::{error::CitraError, logger::Logger};
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
+pub enum AssetType {
+    Script,
+    Texture,
+    Model,
+    Shader,
+    ShaderData,
+    Music,
+    Sfx,
+    Scene,
+    Logfile,
+    Generic,
 }
 
 pub trait AssetProvider {
     /* V Load stuff into common space V */
     // Doesn't check if the asset exists, just formats it into a system path
-    fn get_asset_location(&self, asset: &Asset) -> String;
+    fn get_asset_location(&self, asset_type: AssetType, path: String) -> String;
     // parameter path is target path, not generic asset path
-    fn read_file_to_slice(&self, path: String) -> Result<&[u8], CitraError>;
-    /* V Load stuff into target space V */
-    // this should also load any shaders and textures that are part of the material
-    fn load_material(&self, material: Material) -> Result<(), CitraError>;
-    fn load_model(&self, model: &str) -> Result<(), CitraError>;
-}
-
-pub struct PlaceholderAssetProvider {}
-impl AssetProvider for PlaceholderAssetProvider {
-    fn get_asset_location(&self, _: &Asset) -> String {
-        String::from("PLACEHOLDER ASSET PROVIDER PLEASE IMPLEMENT")
-    }
-    fn read_file_to_slice(&self, _: String) -> Result<&[u8], CitraError> {
-        Err(CitraError::PlaceholderPleaseImplement("AssetProvider".to_string()))
-    }
-    fn load_material(&self, _: Material) -> Result<(), CitraError> {
-        Err(CitraError::PlaceholderPleaseImplement("AssetProvider".to_string()))
-    }
-    fn load_model(&self, _: &str) -> Result<(), CitraError> {
-        Err(CitraError::PlaceholderPleaseImplement("AssetProvider".to_string()))
-    }
+    fn read_file_to_string(&self, path: String) -> Result<String, CitraError>;
+    fn get_logger(&mut self, target_file: String) -> Result<Rc<RefCell<dyn Logger>>, CitraError>;
 }

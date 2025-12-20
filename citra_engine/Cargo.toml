@@ -1,6 +1,6 @@
 [package]
 name = "citra_engine"
-version.workspace = true
+version = "2.0.0-pre-alpha"
 edition = "2024"
 license = "GPLv3"
 license_file = "../LICENSE"
@@ -8,7 +8,6 @@ license_file = "../LICENSE"
 [lib]
 name = "citra_engine"
 path = "./src/lib.rs"
-test = true
 
 [dependencies]
 glam = { version = "0.30.8", features = ["serde"] }
@@ -17,3 +16,5 @@ simd-json = "0.17.0"
 
 [features]
 fast-math = ["glam/fast-math"]
+enable-speedup = []
+new-n3ds-only = []

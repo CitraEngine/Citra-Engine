@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use std::error::Error;
 
+use crate::scene::material::ShaderInputDiscriminant;
+
 #[derive(Debug, Clone)]
 pub enum CitraError {
     AssetNotFound(String),
@@ -31,6 +33,19 @@ pub enum CitraError {
     PlaceholderPleaseImplement(String),
     SceneLoadingError(String),
     SceneVersionNotSupported,
+    ReadFileError(String),
+    MaterialLoadError(String),
+    ModelLoadError(String),
+    LoggerFetchError(String),
+    StructInitializationError(String),
+    IncompatibleShaderInputs {
+        mat_inputs: Vec<ShaderInputDiscriminant>,
+        shader_inputs: Vec<ShaderInputDiscriminant>,
+    },
+    ShaderVersionNotSupported,
+    PlatformError(String),
+    MissingScriptArg(String, String),
+    InvalidScriptArgType(String, String, String),
     Other(String),
 }
 impl PartialEq for CitraError {
@@ -49,9 +64,38 @@ impl core::fmt::Display for CitraError {
             CitraError::InvalidMaterialIndex(msg) => write!(f, "Invalid Material Index: {}", msg),
             CitraError::InvalidMeshIndex(msg) => write!(f, "Invalid Mesh Index: {}", msg),
             CitraError::InvalidScriptName(msg) => write!(f, "Invalid Script Name: {}", msg),
-            CitraError::PlaceholderPleaseImplement(msg) => write!(f, "Placeholder Please Implement: {}", msg),
+            CitraError::PlaceholderPleaseImplement(msg) => {
+                write!(f, "Placeholder Please Implement: {}", msg)
+            }
             CitraError::SceneLoadingError(msg) => write!(f, "Scene Loading Error: {}", msg),
             CitraError::SceneVersionNotSupported => write!(f, "Scene Version Not Supported"),
+            CitraError::ReadFileError(msg) => write!(f, "File Read Error: {}", msg),
+            CitraError::MaterialLoadError(msg) => write!(f, "Material Load Error: {}", msg),
+            CitraError::ModelLoadError(msg) => write!(f, "Model Load Error: {}", msg),
+            CitraError::LoggerFetchError(msg) => write!(f, "Logger Fetch Error: {}", msg),
+            CitraError::StructInitializationError(msg) => {
+                write!(f, "Struct Initialization Error: {}", msg)
+            }
+            CitraError::IncompatibleShaderInputs {
+                mat_inputs,
+                shader_inputs,
+            } => write!(
+                f,
+                "given inputs: {:?}, expected inputs: {:?}",
+                mat_inputs, shader_inputs
+            ),
+            CitraError::ShaderVersionNotSupported => write!(f, "Shader version not supported"),
+            CitraError::PlatformError(msg) => write!(f, "Platform Error: {}", msg),
+            CitraError::MissingScriptArg(script, arg) => {
+                write!(f, "Missing Script Arg for '{}': Expecting {}", script, arg)
+            }
+            CitraError::InvalidScriptArgType(script, expected_type, err_type) => {
+                write!(
+                    f,
+                    "Invalid Script Arg for '{}': Expected '{}', got '{}'",
+                    script, expected_type, err_type
+                )
+            }
             CitraError::Other(msg) => write!(f, "Error: {}", msg),
         }
     }

@@ -1,0 +1,9 @@
+[package]
+name = "scripts"
+edition = "2024"
+version.workspace = true
+description.workspace = true
+authors.workspace = true
+
+[dependencies]
+citra_engine.workspace = true

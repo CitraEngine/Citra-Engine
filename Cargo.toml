@@ -1,9 +1,20 @@
 [workspace]
 resolver = "3"
-members = ["citra_engine", "n3ds_target", "pc_target"]
+members = ["citra_engine", "citro2d-sys", "n3ds_ogg-sys", "n3ds_libvorbisidec-sys", "pc_target", "n3ds_target", "scripts"]
 
 [workspace.package]
 version = "2.0.0-pre-alpha"
+description = "Your description here"
+authors = ["John Doe", "Jane Doe"]
 
 [workspace.dependencies]
 citra_engine = { path = "./citra_engine" }
+citro2d-sys = { path = "./citro2d-sys" }
+n3ds_libvorbisidec-sys = { path = "./n3ds_libvorbisidec-sys" }
+scripts = { path = "./scripts" }
+n3ds_ogg-sys = { path = "./n3ds_ogg-sys" }
+
+[workspace.features]
+fast-math = ["citra_engine/fast-math", "n3ds_target/fast-math"]
+enable-speedup = ["citra_engine/enable-speedup", "n3ds_target/enable-speedup"]
+new-n3ds-only = ["citra_engine/new-n3ds-only", "n3ds_target/new-n3ds-only"]

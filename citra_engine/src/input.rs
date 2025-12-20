@@ -52,7 +52,23 @@ pub enum InputBits {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct InputState {
-    keys_held: u32,
-    keys_down: u32,
-    keys_up: u32,
+    pub keys_held: u32,
+    pub keys_down: u32,
+    pub keys_up: u32,
+}
+impl InputState {
+    pub const ZERO: Self = Self {
+        keys_held: 0,
+        keys_down: 0,
+        keys_up: 0,
+    };
+
+    pub fn start_pressed(&self) -> bool {
+        (self.keys_down & InputBits::KeyStart as u32) > 0
+    }
+}
+
+pub trait InputManager {
+    fn scan(&mut self) -> InputState;
+    fn should_continue(&self) -> bool;
 }

@@ -18,13 +18,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use serde::{Deserialize, Serialize};
 
-use crate::scene::{mesh::Mesh, node_path::NodePath, ui::{CanvasSpace, TextAlign}};
+use crate::scene::{
+    mesh::Mesh,
+    node_path::NodePath,
+    ui::{CanvasSpace, TextAlign},
+};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub enum RenderData {
     Empty,
-    Cube { 
-        material: usize 
+    Cube {
+        material: usize,
     },
     Mesh {
         materials: Vec<usize>,
@@ -36,7 +40,7 @@ pub enum RenderData {
         mesh: Mesh,
     },
     Canvas {
-        space: CanvasSpace
+        space: CanvasSpace,
     },
     Text {
         text: String,
@@ -49,5 +53,7 @@ pub enum RenderData {
         fov: f32,
         near: f32,
         far: f32,
+        #[serde(skip)]
+        inverse_transform: glam::Mat4,
     },
 }

@@ -1,2 +1,3 @@
 target/
 Cargo.lock
+n3ds_target/icon.png

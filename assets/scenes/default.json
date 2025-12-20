@@ -1,0 +1,152 @@
+{
+  "version": "1",
+  "models": ["/models/3ds_logo"],
+  "materials": [
+    {
+      "shader_file": "/shaders/simple_textured",
+      "inputs": [
+        {
+          "Texture2D": "/textures/citra_engine"
+        }
+      ]
+    },
+    {
+      "shader_file": "/shaders/simple_textured",
+      "inputs": [
+        {
+          "Texture2D": "/textures/3ds_logo_tex"
+        }
+      ]
+    }
+  ],
+  "top_camera": "/top_camera",
+  "bottom_camera": "/bottom_camera",
+  "scene_graph": {
+    "cube": {
+      "render_data": {
+        "Cube": { "material": 0 }
+      },
+      "position": [0.0, 0.0, -3.0],
+      "rotation": [0.0, 1.0471975512, 0.523598775598],
+      "scale": [1.0, 1.0, 1.0],
+      "scripts": [],
+      "children": {}
+    },
+    "3ds_logo": {
+      "render_data": {
+        "Mesh": {
+          "materials": [1],
+          "mesh": {
+            "model": 0,
+            "mesh": 0
+          }
+        }
+      },
+      "position": [0.0, -15.0, -3.0],
+      "rotation": [0.0, -1.5707963268, 0.0],
+      "scale": [1.0, 1.0, 1.0],
+      "scripts": [],
+      "children": {}
+    },
+    "top_camera": {
+      "render_data": {
+        "Camera": {
+          "fov": 0.6981316804885864,
+          "near": 0.009999999776482582,
+          "far": 1000.0
+        }
+      },
+      "position": [0.0, 0.0, 1.0],
+      "rotation": [0.0, 0.0, 0.0],
+      "scale": [1.0, 1.0, 1.0],
+      "scripts": [
+        {
+          "script": "StartToExit",
+          "args": {}
+        }
+      ],
+      "children": {}
+    },
+    "bottom_camera": {
+      "render_data": {
+        "Camera": {
+          "fov": 0.6981316804885864,
+          "near": 0.009999999776482582,
+          "far": 1000.0
+        }
+      },
+      "position": [0.0, -15.0, 1.0],
+      "rotation": [0.0, 0.0, 0.0],
+      "scale": [1.0, 1.0, 1.0],
+      "scripts": [],
+      "children": {}
+    },
+    "light": {
+      "render_data": "Empty",
+      "position": [0.0, 0.0, 16.0],
+      "rotation": [0.0, 0.0, 0.0],
+      "scale": [1.0, 1.0, 1.0],
+      "scripts": [],
+      "children": {}
+    },
+    "rest_music": {
+      "render_data": "Empty",
+      "position": [0.0, 0.0, 0.0],
+      "rotation": [0.0, 0.0, 0.0],
+      "scale": [1.0, 1.0, 1.0],
+      "scripts": [
+        {
+          "script": "PlayMusic",
+          "args": {
+            "file": {
+              "FilePath": "/music/Rest"
+            }
+          }
+        }
+      ],
+      "children": {}
+    }
+  },
+  "light_env": {
+    "lights": [
+      {
+        "light_type": "PointLight",
+        "color": [1.0, 1.0, 1.0],
+        "follow_transform": "/light"
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "light_luts": {
+      "diffuse0": {
+        "lut": {
+          "Phong": {
+            "factor": 20.0,
+            "negative": false
+          }
+        },
+        "input": "LightVecXNormal"
+      },
+      "diffuse1": null,
+      "diffuse2": null,
+      "spotlight": null,
+      "fresnel": null,
+      "reflection_red": null,
+      "reflection_green": null,
+      "reflection_blue": null,
+      "distance_attenuation": null
+    },
+    "light_material": {
+      "ambient": [0.1, 0.1, 0.1],
+      "diffuse": [0.4, 0.4, 0.4],
+      "specular0": [0.5, 0.5, 0.5],
+      "specular1": [0.0, 0.0, 0.0],
+      "emission": [0.0, 0.0, 0.0]
+    }
+  }
+}
