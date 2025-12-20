@@ -31,7 +31,7 @@ cargo build -p pc_target
 ### Project Structure
 [assets](./assets/) contains READ ONLY data. For now, any read-write data must be created at runtime manually with a script.
 </br>
-[game](./game/) is where you will write your game code, every other package can be ignored.
+[scripts](./scripts/) is where you will write your game code, every other package can be ignored.
 </br>
 You can set your game version, description, and authors in [Cargo.toml](./Cargo.toml) at the `[workspace.package]` section
 </br>
