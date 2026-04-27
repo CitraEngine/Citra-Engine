@@ -1,0 +1,19 @@
+# THIS IS A HANDWRITTEN FILE TO SHOW WHAT hello_world.aasm WOULD COMPILE INTO
+.section header
+_start: 0x200
+
+.section pool # normally the pool would be compiled into a separate file and shared across all compiled asimina asm files in the game, this is just here for showcase purposes
+0x100
+0x0
+0x1
+
+.section data
+ORG 0x100 # theoretically, memory here starts at 0x100
+"Hello World" 10 0
+
+.section text
+ORG 0x200 # theoretically, memory here starts at 0x200
+MOVII 0 0 # move integer immediate into register 0 at index 0 (r0 = 0x100)
+CLHI 2    # call host function with immediate in pool at 2 (CALH 0x1)
+MOVII 0 1 # mov integer immediate into register 0 at index 1 (r0 = 0x0)
+CLHI 1    # call host runction with immediate in pool at 1 (CALH 0x0)

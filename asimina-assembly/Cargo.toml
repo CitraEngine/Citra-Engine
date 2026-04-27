@@ -1,0 +1,8 @@
+[package]
+name = "asimina-assembly"
+edition = "2024"
+version.workspace = true
+description.workspace = true
+authors.workspace = true
+
+[dependencies]
