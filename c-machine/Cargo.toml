@@ -1,0 +1,8 @@
+[package]
+name = "c-machine"
+edition = "2024"
+version.workspace = true
+description.workspace = true
+authors.workspace = true
+
+[dependencies]

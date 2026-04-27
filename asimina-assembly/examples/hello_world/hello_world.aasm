@@ -1,0 +1,15 @@
+#define INTRINSIC_EXIT  0
+#define INTRINSIC_PRINT 1
+
+.section data
+    hello: db "Hello World", 10, 0
+
+.section text
+global _start
+
+_start:
+    mov r0, hello # move pointer to string to r0
+    calh INTRINSIC_PRINT # call print intrinsic
+
+    mov r0, 0 # move exit status 0 into r0
+    calh INTRINSIC_EXIT # finish execution

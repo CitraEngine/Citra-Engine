@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["citra_engine", "citro2d-sys", "n3ds_ogg-sys", "n3ds_libvorbisidec-sys", "pc_target", "n3ds_target", "scripts"]
+members = ["citra_engine", "citro2d-sys", "n3ds_ogg-sys", "n3ds_libvorbisidec-sys", "pc_target", "n3ds_target", "scripts", "mango-lang", "asimina-assembly", "c-machine"]
 
 [workspace.package]
 version = "2.0.0-pre-alpha"
